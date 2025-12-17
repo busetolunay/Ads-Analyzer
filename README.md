@@ -135,10 +135,10 @@ python batch_runner.py
 uvicorn main:app --reload
 ```
 
-### Future Improvements
+## Future Improvements
 While the current solution provides a solid baseline for static tagging, the next phase of development would focus on Deep Content Intelligence and Market Awareness.
 
-1. Granular Temporal Analysis (Timestamping)
+#### 1. Granular Temporal Analysis (Timestamping)
 Current State: The model provides a global summary 
 
 Improvement: Implement frame-perfect event logging to generate a timeline JSON.
@@ -154,7 +154,7 @@ Example: "Character 'Buse' appears at 0:02, 0:04, and 0:10."
 
 Business Value: Identify which characters or skins drive the highest conversion rates in ads.
 
-3. Trend & Audio Intelligence (Web Search Integration)
+#### 3. Trend & Audio Intelligence (Web Search Integration)
 Improvement: Give the AI agent internet access (via Tool) to cross-reference audio and visual styles against current social media trends.
 
 Workflow:
@@ -166,18 +166,19 @@ Output: "Uses trending audio 'Spooky Scary Skeletons' (Trend Peak: Oct 2025)."
 
 Business Value: detect if an ad is using "stale" memes or riding a current viral wave.
 
-4. Production-Grade Engineering
+#### 4. Agentic Workflows & Multi-Agent Orchestration
+Instead of a linear script, the system could evolve into an Autonomous Creative Lab using a framework like LangGraph or CrewAI:
+
+The Researcher Agent: Performs web searches to identify if the audio or visual style is currently trending on TikTok/Reels.
+
+The Critic Agent: Compares the AI-generated tags against the creative_metrics.csv. If an ad has a high Click-Through Rate CTR but "boring" tags, the Critic Agent forces a re-analysis to find the hidden factor.
+
+The Iteration Agent: Based on analysis, this agent generates a new script or visual storyboard to improve the ad for the next campaign.
+
+#### 5. Production-Grade Engineering
 Asynchronous Processing (Celery/Redis): Decouple video processing from the API response to handle heavy loads without timeouts.
 
 Vector Database (Pinecone/Weaviate): Store video embeddings to enable semantic search (Marketers can query: "Show all ads that look like UGC content" without needing explicit tags).
 
 Golden Dataset Evaluation: Establish a CI/CD pipeline that tests the prompt against human-labeled videos to ensure tagging accuracy remains high as the model evolves.
 
-5. Agentic Workflows & Multi-Agent Orchestration
-Instead of a linear script, the system could evolve into an Autonomous Creative Lab using a framework like LangGraph or CrewAI:
-
-The Researcher Agent: Performs web searches to identify if the audio or visual style is currently trending on TikTok/Reels.
-
-The Critic Agent: Compares the AI-generated tags against the creative_metrics.csv. If an ad has a high Click-Through Rate CTR but "boring" tags, the Critic Agent forces a re-analysis to find the hidden "X-factor."
-
-The Iteration Agent: Based on analysis, this agent generates a new script or visual storyboard to improve the ad for the next campaign.

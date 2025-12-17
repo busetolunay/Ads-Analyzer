@@ -74,25 +74,23 @@ class GameplayProp(str, Enum):
     HAZARD_LAVA = "Prop_Hazard_Lava"
     HAZARD_SPIKES = "Prop_Hazard_Spikes"
     HAZARD_SAWS = "Prop_Hazard_Saws"
-    
-    # Gameplay Modifiers
+    # Modifiers
     MATH_GATES = "Prop_MathGates"
     EVOLUTION_DOOR = "Prop_EvolutionDoor"
     CONVEYOR_BELT = "Prop_ConveyorBelt"
-    
-    # Resources / Items
+    # Items
     MONEY_STACKS = "Prop_MoneyStacks"
-    RESOURCE_NODES = "Prop_ResourceNodes" # Trees, Rocks, Ores
+    RESOURCE_NODES = "Prop_ResourceNodes"
     COLLECTIBLE_GEMS = "Prop_Collectible_Gems"
     REWARD_CHEST = "Prop_RewardChest"
     WEAPON_HELD = "Prop_Weapon"
     VEHICLE = "Prop_Vehicle"
-    
-    # Environment / Crowd
+    # Environment
     CROWD_SWARM = "Prop_CrowdSwarm"
     LOCKED_AREA_GRAY = "Prop_LockedArea"
-    LIQUID_GENERIC = "Prop_Liquid_Generic" # Water, Acid, Slime (Not Lava)
+    LIQUID_GENERIC = "Prop_Liquid_Generic"
     DEBRIS_TRASH = "Prop_Debris_Trash"
+
 # ==========================================
 # 3. PSYCHOLOGY & EMOTION LAYER
 # ==========================================
@@ -111,6 +109,7 @@ class SatisfactionTrigger(str, Enum):
     PERFECT_FIT = "Satisfying_PerfectFit"
     NUMBER_TICKER = "Satisfying_NumberTicker"
     SMOOTH_PHYSICS = "Satisfying_SmoothPhysics"
+    ASMR_SOUND = "Satisfying_ASMR_Sound"
 
 class EmotionTrigger(str, Enum):
     FRUSTRATION = "Emotion_Frustration"
@@ -149,13 +148,68 @@ class CTAElement(str, Enum):
     STORE_BADGE = "CTA_StoreBadge"
 
 # ==========================================
+# 5. AUDIO LAYER (NEW)
+# ==========================================
+
+class MusicGenre(str, Enum):
+    EPIC_ORCHESTRAL = "Music_Epic_Orchestral"
+    LOFI_CHILL = "Music_LoFi_Chill"
+    ELECTRONIC_UPBEAT = "Music_Upbeat_EDM"
+    EIGHT_BIT = "Music_8Bit"
+    CARTOON_SLAPSTICK = "Music_Slapstick"
+    SUSPENSE_HORROR = "Music_Suspense"
+    VIRAL_TREND = "Music_Viral_Trend"
+    SILENCE = "Music_Silence"
+
+class SoundEffect(str, Enum):
+    # Interaction
+    COIN_COLLECT = "SFX_Coin_Jingle"
+    UI_TAP_CLICK = "SFX_UI_Click"
+    FAKE_NOTIFICATION = "SFX_Notification"
+    LEVEL_UP = "SFX_LevelUp"
+    # Action
+    MECHANICAL_DRILL = "SFX_Drill_Loop"
+    VACUUM_SUCTION = "SFX_Vacuum_Loop"
+    LIQUID_SPLASH = "SFX_Liquid_Splash"
+    WEAPON_SHOT = "SFX_Weapon_Shot"
+    BUILDING_THUD = "SFX_Building_Pop"
+    # Emotion
+    ASMR_CRUNCH = "SFX_ASMR_Crunch"
+    ASMR_SLIME = "SFX_ASMR_Slime"
+    FAIL_BUZZER = "SFX_Fail_Buzzer"
+    WIN_CHEER = "SFX_Win_Cheer"
+
+class VoiceOverType(str, Enum):
+    AI_GENERIC_TTS = "VO_AI_Generic"
+    AI_TIKTOK_VOICE = "VO_AI_TikTok"
+    REAL_HUMAN_PRO = "VO_Human_Pro"
+    REAL_HUMAN_UGC = "VO_Human_UGC"
+    NO_VOICEOVER = "VO_None"
+
+class VoiceOverTone(str, Enum):
+    EXCITED_HYPE = "VO_Tone_Excited"
+    WHISPERING_ASMR = "VO_Tone_Whispering"
+    ANGRY_FRUSTRATED = "VO_Tone_Angry"
+    MOCKING = "VO_Tone_Mocking"
+    CALM_EXPLANATORY = "VO_Tone_Calm"
+    SCARED_PANIC = "VO_Tone_Scared"
+
+class VoiceOverContent(str, Enum):
+    TUTORIAL_GUIDE = "Content_Tutorial"
+    FALSE_DIFFICULTY = "Content_HardBait"
+    PLAYER_REACTION = "Content_Reaction"
+    NARRATIVE_STORY = "Content_Story"
+    PROMO_OFFER = "Content_Promo"
+
+
+# ==========================================
 # MASTER SCHEMA
 # ==========================================
 
-class VisualCreativeAnalysis(BaseModel):
+class CreativeAnalysis(BaseModel):
     """
-    Structured output for Mobile Game Ad Analysis.
-    This schema is designed for AI Vision models.
+    Comprehensive Multimodal Analysis of Mobile Game Ad Creative.
+    Covers Visuals, Gameplay Mechanics, Psychology, Marketing, and Audio.
     """
 
     # --- Section 1: Visuals ---
@@ -260,11 +314,11 @@ class VisualCreativeAnalysis(BaseModel):
             "- 'Prop_EvolutionDoor': Gates labeled with years (1900->2000) or status (Poor->Rich).\n"
             "- 'Prop_MoneyStacks': Piles of cash, gold bars, or coins visibly sitting on the ground.\n"
             "- 'Prop_LockedArea': Grayed-out or silhouette zones waiting to be unlocked.\n"
-            "- 'Prop_RewardChest': Treasure chests, gift boxes, or safes (often at the end level).\n"
-            "- 'Prop_Collectible_Gems': Floating items like diamonds, stars, or keys to be collected.\n"
+            "- 'Prop_RewardChest': Treasure chests, gift boxes, or safes.\n"
+            "- 'Prop_Collectible_Gems': Floating items like diamonds, stars, or keys.\n"
             "- 'Prop_Vehicle': Cars, tanks, or planes driven by the character.\n"
             "- 'Prop_Weapon': Held items like guns, swords, giant hammers, or bats.\n"
-            "- 'Prop_ConveyorBelt': Moving floors transporting items (common in factory/idle).\n"
+            "- 'Prop_ConveyorBelt': Moving floors transporting items.\n"
             "- 'Prop_ResourceNodes': Breakable environment objects like trees, rocks, or ore veins.\n"
             "- 'Prop_Liquid_Generic': Blue water, green acid, or purple slime (Distinct from Lava).\n"
             "- 'Prop_Debris_Trash': Scattered garbage, dust, or stains meant to be cleaned."
@@ -302,8 +356,9 @@ class VisualCreativeAnalysis(BaseModel):
             "Identify satisfying elements:\n"
             "- 'Satisfying_CleanMap': Converting a dirty/foggy map to a clean one.\n"
             "- 'Satisfying_PerfectFit': Objects sliding perfectly into slots.\n"
+            "- 'Satisfying_NumberTicker': Score/Money counters rolling up rapidly.\n"
             "- 'Satisfying_SmoothPhysics': Jelly-like movement or smooth stacking.\n"
-            
+            "- 'Satisfying_ASMR_Sound': Visuals implying crunching/slicing textures."
         )
     )
     fail_scenario: Optional[FailType] = Field(
@@ -355,7 +410,78 @@ class VisualCreativeAnalysis(BaseModel):
         description="Extract exact raw text strings from overlays (e.g. 'Level 5', 'Failed!')."
     )
 
-    # --- Section 5: AI Inference ---
+    # --- Section 5: Audio Analysis (Multimodal) ---
+    music_genre: Optional[MusicGenre] = Field(
+        None,
+        description=(
+            "Identify the background music style:\n"
+            "- 'Music_Epic_Orchestral': Cinematic, war drums, RPG style.\n"
+            "- 'Music_LoFi_Chill': Relaxed beats, soft piano.\n"
+            "- 'Music_Upbeat_EDM': High energy, fast tempo electronic.\n"
+            "- 'Music_8Bit': Retro, chiptune sounds.\n"
+            "- 'Music_Slapstick': Tuba, pizzicato strings, goofy sounds (Fail ads).\n"
+            "- 'Music_Suspense': Eerie drones, heartbeats.\n"
+            "- 'Music_Viral_Trend': Recognizable TikTok/Meme audio loops.\n"
+            "- 'Music_Silence': No music track present."
+        )
+    )
+    sfx_detected: List[SoundEffect] = Field(
+        default_factory=list,
+        description=(
+            "Select ALL distinct sound effects heard:\n"
+            "- 'SFX_Coin_Jingle': High pitched tinkling/ching sounds.\n"
+            "- 'SFX_UI_Click': Standard button sounds.\n"
+            "- 'SFX_Notification': Fake message alerts (ding/vibration).\n"
+            "- 'SFX_LevelUp': Ascending chime or fanfare.\n"
+            "- 'SFX_Drill_Loop': Constant buzzing/grinding mechanics.\n"
+            "- 'SFX_Vacuum_Loop': Continuous air suction noise.\n"
+            "- 'SFX_Liquid_Splash': Water, slime, or mud sounds.\n"
+            "- 'SFX_Weapon_Shot': Gunfire, sword swings, laser blasts.\n"
+            "- 'SFX_Building_Pop': Pop/Thud sound when a building completes.\n"
+            "- 'SFX_ASMR_Crunch': Crushing dry items, breaking glass.\n"
+            "- 'SFX_Fail_Buzzer': 'Womp womp', buzzer, or glass breaking."
+        )
+    )
+    voiceover_type: Optional[VoiceOverType] = Field(
+        None,
+        description=(
+            "Classify the speaker's audio quality:\n"
+            "- 'VO_AI_Generic': Standard robotic text-to-speech.\n"
+            "- 'VO_AI_TikTok': The specific, upbeat 'Lady' voice common on TikTok.\n"
+            "- 'VO_Human_Pro': Studio quality, radio-announcer voice.\n"
+            "- 'VO_Human_UGC': Amateur audio quality, likely recorded on phone.\n"
+            "- 'VO_None': No voiceover present."
+        )
+    )
+    voiceover_tone: Optional[VoiceOverTone] = Field(
+        None,
+        description=(
+            "Detect the emotional intent of the speaker:\n"
+            "- 'VO_Tone_Excited': High energy, shouting, fast paced.\n"
+            "- 'VO_Tone_Whispering': Very quiet, close to mic (ASMR).\n"
+            "- 'VO_Tone_Angry': Yelling, complaining about difficulty.\n"
+            "- 'VO_Tone_Mocking': Sarcastic, making fun of the player.\n"
+            "- 'VO_Tone_Calm': Neutral, tutorial style.\n"
+            "- 'VO_Tone_Scared': Screaming, reacting to horror."
+        )
+    )
+    voiceover_content_category: Optional[VoiceOverContent] = Field(
+        None,
+        description=(
+            "Categorize the topic being spoken about:\n"
+            "- 'Content_Tutorial': Guides like 'Drag to move'.\n"
+            "- 'Content_HardBait': Complaints like 'I can't reach pink'.\n"
+            "- 'Content_Reaction': Outbursts like 'Oh my god!'.\n"
+            "- 'Content_Story': Narratives like 'He cheated on me'.\n"
+            "- 'Content_Promo': Offers like 'Download now'."
+        )
+    )
+    transcription_text: str = Field(
+        default="",
+        description="Verbatim text transcription of any spoken language."
+    )
+
+    # --- Section 6: AI Inference ---
     is_fake_gameplay: bool = Field(
         ..., 
         description="TRUE if gameplay (e.g. Pull Pin) seems unrelated to the likely core app genre (e.g. Strategy). FALSE if gameplay looks authentic."

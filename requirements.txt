@@ -1,0 +1,8 @@
+langchain-google-genai
+opencv-python
+langchain-core 
+python-dotenv
+fastapi 
+uvicorn 
+google-generativeai
+python-multipart

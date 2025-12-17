@@ -8,17 +8,29 @@ from data_models.CreativeAdsAnalysis import CreativeAnalysis
 
 load_dotenv()
 
-VIDEO_DIR = "./videos"
-OUTPUT_FILE = "./output/final_analysis_results.csv"
+# script trusts that Docker has mounted the data here.
+INTERNAL_INPUT_DIR = "/app/data/inputs"
+INTERNAL_OUTPUT_DIR = "/app/data/outputs"
+OUTPUT_FILENAME = "analysis_results.csv"
+
 
 def main():
+    # ensure output directory exists (good practice)
+    os.makedirs(INTERNAL_OUTPUT_DIR, exist_ok=True)
+    output_path = os.path.join(INTERNAL_OUTPUT_DIR, OUTPUT_FILENAME)
+    
+    
     # setup output CSV from pydantic model
     field_keys = list(CreativeAnalysis.model_fields.keys())
     fieldnames = ["filename"] + field_keys
     
     #find videos
-    videos = glob.glob(os.path.join(VIDEO_DIR, "*.mp4"))
+    videos = glob.glob(os.path.join(INTERNAL_INPUT_DIR, "*.mp4"))
+    print(f"Scanning container path: {INTERNAL_INPUT_DIR}")
     print(f"Found {len(videos)} videos to process.")
+    if not videos:
+        print("No videos found, map the volume correctly in .env file")
+        return
 
     results = []
 
@@ -52,11 +64,11 @@ def main():
         
     # 4. Save CSV
     if results:
-        with open(OUTPUT_FILE, 'w', newline='', encoding='utf-8') as f:
+        with open(output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(results)
-        print(f"Done! Results in {OUTPUT_FILE}")
+        print(f"Done! Results in {output_path}")
     else:
         print("No results generated.")
 

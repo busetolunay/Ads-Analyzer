@@ -1,0 +1,25 @@
+services:
+  # SERVICE 1: The Batch Processor (The main requirement)
+  # Runs automatically, processes videos, saves CSV, and exits.
+  batch-analyzer:
+    build: .
+    container_name: ad_analysis_batch
+    command: python batch_runner.py
+    volumes:
+      # source_on_computer:destination_in_container
+      - ${HOST_VIDEO_PATH:-./videos}:/app/data/videos:ro
+      - ${HOST_OUTPUT_PATH:-./output}:/app/data/output
+    env_file:
+      - .env
+
+  # SERVICE 2:API Server for single video analysis on demand
+  api-server:
+    build: .
+    container_name: ad_analysis_api
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${HOST_VIDEO_PATH:-./videos}:/app/data/videos
+    env_file:
+      - .env

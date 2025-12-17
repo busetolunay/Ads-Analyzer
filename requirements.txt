@@ -4,5 +4,5 @@ langchain-core
 python-dotenv
 fastapi 
 uvicorn 
-google-generativeai
+google-genai
 python-multipart

@@ -2,23 +2,22 @@ import os
 import shutil
 import time
 from dotenv import load_dotenv
-load_dotenv()
-
-if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
-    del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from google import genai 
+from google.genai import types
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 from data_models.CreativeAdsAnalysis import CreativeAnalysis
-import google.generativeai as genai
 
+load_dotenv()
 
 if not os.getenv("GOOGLE_API_KEY"):
     raise ValueError("GOOGLE_API_KEY not found. Please set it in your .env file.")
 
-# Gemini 1.5 pro or flash , native Multimodal"
-# gemini-1.5-flash is faster/cheaper but less capable than "gemini-1.5-pro"
+client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+
+# Gemini 2.5 pro or flash , native Multimodal"
+# gemini-2.5-flash is faster/cheaper but less capable than "gemini-1.5-pro"
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash", 
     temperature=0
@@ -31,7 +30,7 @@ def analyze_video(video_path: str):
     print(f"1. Uploading {video_path} to Google AI Studio...")
     
     # upload via Native SDK is required for videos over 20mb
-    video_file = genai.upload_file(path=video_path)
+    video_file = client.files.upload(file=video_path)
     print(f"   Uploaded: {video_file.name}")
 
     # videos require a processing phase before they can be analyzed
@@ -39,7 +38,7 @@ def analyze_video(video_path: str):
     while video_file.state.name == "PROCESSING":
         print(".", end="", flush=True)
         time.sleep(2)
-        video_file = genai.get_file(video_file.name)
+        video_file = client.files.get(name=video_file.name)
 
     if video_file.state.name == "FAILED":
         raise ValueError("Video processing failed on Google's side.")
